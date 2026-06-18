@@ -2,41 +2,33 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using GradeBook.Services;
 using GradeBook.ViewModels;
 
 namespace GradeBook.Views
 {
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        // Конструктор принимает ViewModel через Dependency Injection
+        public MainWindow(MainViewModel viewModel)
         {
             InitializeComponent();
-            DataContext = App.ServiceProvider.GetService(typeof(MainViewModel)) as MainViewModel;
-            // #region agent log
-            DebugLog.Write("H3", "MainWindow.xaml.cs:MainWindow", "data context assigned", new { hasDataContext = DataContext != null, dataContextType = DataContext?.GetType().Name });
-            // #endregion
+            DataContext = viewModel;
         }
 
+        // Фикс: выделение строки DataGrid при клике правой кнопкой мыши (для контекстного меню)
         private void StudentsGrid_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            var row = FindVisualParent<DataGridRow>(e.OriginalSource as DependencyObject);
-            if (row == null) return;
-
-            row.Focus();
-            row.IsSelected = true;
-        }
-
-        private static T? FindVisualParent<T>(DependencyObject? child)
-            where T : DependencyObject
-        {
-            while (child != null)
+            if (sender is DataGrid dataGrid && e.OriginalSource is DependencyObject dep)
             {
-                if (child is T parent) return parent;
-                child = VisualTreeHelper.GetParent(child);
+                while (dep != null && !(dep is DataGridRow))
+                {
+                    dep = VisualTreeHelper.GetParent(dep);
+                }
+                if (dep is DataGridRow row)
+                {
+                    dataGrid.SelectedItem = row.DataContext;
+                }
             }
-
-            return null;
         }
     }
 }

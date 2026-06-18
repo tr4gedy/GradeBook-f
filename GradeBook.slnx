@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="GradeBook.Test/GradeBook.Test.csproj" Id="9a9596d7-a048-4cee-a004-26429d5d6c86" />
   <Project Path="prct/GradeBook.csproj" />
 </Solution>

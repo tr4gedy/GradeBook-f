@@ -1,5 +1,4 @@
-﻿// Services/IPdfExporter.cs
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace GradeBook.Services
@@ -13,7 +12,7 @@ namespace GradeBook.Services
     {
         public string FullName { get; set; } = string.Empty;
         public string Subject { get; set; } = string.Empty;
-        public int Grade { get; set; }
+        public string AllGrades { get; set; } = string.Empty; // Было Grade (int), стало AllGrades (string)
         public double Average { get; set; }
     }
 }
