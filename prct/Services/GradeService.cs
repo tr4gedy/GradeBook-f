@@ -16,19 +16,26 @@ namespace GradeBook.Services
         {
             _dbFactory = dbFactory;
         }
-
+        /// <summary>
+        ///  Логика получения групп
+        /// </summary>
+     
         public async Task<List<Group>> GetGroupsAsync()
         {
             await using var db = await _dbFactory.CreateDbContextAsync();
             return await db.Groups.OrderBy(g => g.Name).ToListAsync();
         }
-
+        /// <summary>
+        ///  Логика получени предметов
+        /// </summary>
         public async Task<List<Subject>> GetSubjectsAsync()
         {
             await using var db = await _dbFactory.CreateDbContextAsync();
             return await db.Subjects.OrderBy(s => s.Title).ToListAsync();
         }
-
+        /// <summary>
+        ///  Логика получения студентов
+        /// </summary>
         public async Task<List<Student>> GetStudentsAsync(int groupId)
         {
             await using var db = await _dbFactory.CreateDbContextAsync();
@@ -38,7 +45,9 @@ namespace GradeBook.Services
                 .OrderBy(s => s.FullName)
                 .ToListAsync();
         }
-
+        /// <summary>
+        ///  Логика вычисления среднего балла 
+        /// </summary>
         public async Task<double> CalculateAverageAsync(int studentId, int? subjectId = null)
         {
             await using var db = await _dbFactory.CreateDbContextAsync();
@@ -52,7 +61,9 @@ namespace GradeBook.Services
             if (!await query.AnyAsync()) return 0;
             return await query.AverageAsync(g => g.Value);
         }
-
+        /// <summary>
+        ///  Логика вычисления среднего балла группы
+        /// </summary>
         public async Task<double> CalculateGroupAverageAsync(int groupId, int? subjectId = null)
         {
             await using var db = await _dbFactory.CreateDbContextAsync();
@@ -66,7 +77,9 @@ namespace GradeBook.Services
             if (!await query.AnyAsync()) return 0;
             return await query.AverageAsync(g => g.Value);
         }
-
+        /// <summary>
+        ///  Логика добавления группы
+        /// </summary>
         public async Task<Group> AddGroupAsync(string name)
         {
             await using var db = await _dbFactory.CreateDbContextAsync();
@@ -75,7 +88,9 @@ namespace GradeBook.Services
             await db.SaveChangesAsync();
             return group;
         }
-
+        /// <summary>
+        ///  Логика удаления группы
+        /// </summary>
         public async Task<bool> DeleteGroupAsync(int groupId)
         {
             await using var db = await _dbFactory.CreateDbContextAsync();
@@ -86,7 +101,9 @@ namespace GradeBook.Services
             await db.SaveChangesAsync();
             return true;
         }
-
+        /// <summary>
+        ///  Логика добавления студента
+        /// </summary>
         public async Task<Student> AddStudentAsync(int groupId, string fullName)
         {
             await using var db = await _dbFactory.CreateDbContextAsync();
@@ -95,7 +112,9 @@ namespace GradeBook.Services
             await db.SaveChangesAsync();
             return student;
         }
-
+        /// <summary>
+        ///  Логика удаления студента
+        /// </summary>
         public async Task<bool> DeleteStudentAsync(int studentId)
         {
             await using var db = await _dbFactory.CreateDbContextAsync();
@@ -106,7 +125,9 @@ namespace GradeBook.Services
             await db.SaveChangesAsync();
             return true;
         }
-
+        /// <summary>
+        ///  Логика выдачи оценки
+        /// </summary>
         public async Task AddGradeAsync(int studentId, int subjectId, int value)
         {
             if (value < 2 || value > 5)
@@ -122,13 +143,17 @@ namespace GradeBook.Services
             db.Grades.Add(grade);
             await db.SaveChangesAsync();
         }
-
+        /// <summary>
+        ///  Логика обновления рейтинга
+        /// </summary>
         public async Task UpdateRatingAsync(int groupId)
         {
             // Метод для обновления снэпшотов/рейтинга (при необходимости добавьте сюда логику)
             await Task.CompletedTask;
         }
-
+        /// <summary>
+        ///  Логика получения последней оценки
+        /// </summary>
         public async Task<Grade?> GetLastGradeAsync(int studentId)
         {
             await using var db = await _dbFactory.CreateDbContextAsync();
@@ -138,7 +163,9 @@ namespace GradeBook.Services
                 .OrderByDescending(g => g.Id)
                 .FirstOrDefaultAsync();
         }
-
+        /// <summary>
+        ///  Логика получения оценок студента
+        /// </summary>
         public async Task<List<Grade>> GetStudentGradesAsync(int studentId)
         {
             await using var db = await _dbFactory.CreateDbContextAsync();
@@ -147,7 +174,9 @@ namespace GradeBook.Services
                 .Include(g => g.Subject)
                 .ToListAsync();
         }
-
+        /// <summary>
+        ///  Логика обновления оценок
+        /// </summary>
         public async Task UpdateGradeAsync(int gradeId, int newValue)
         {
             await using var db = await _dbFactory.CreateDbContextAsync();
@@ -158,7 +187,9 @@ namespace GradeBook.Services
                 await db.SaveChangesAsync();
             }
         }
-
+        /// <summary>
+        ///  Логика удаления оценок
+        /// </summary>
         public async Task<bool> DeleteGradeAsync(int gradeId)
         {
             await using var db = await _dbFactory.CreateDbContextAsync();
