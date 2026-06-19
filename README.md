@@ -63,8 +63,7 @@ dotnet run
 экспортировать ведомость в пдф
 просматривать гистограмму
 
----
-**7. Демонстрация**
+---**7. Демонстрация**
 <img width="1918" height="1078" alt="image" src="https://github.com/user-attachments/assets/27b10c59-5bd3-4071-b4de-0da7a8196c40" />
 
 Главное окно
